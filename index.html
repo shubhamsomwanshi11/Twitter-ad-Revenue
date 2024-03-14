@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+</head>
+
+<body>
+    <style>
+        #screenshort-container {
+            width: 342px;
+            height: 602px;
+            background-image: url(./img/wallpaper2.jpeg);
+            border-radius: 10px;
+            background-size: cover;
+            position: relative;
+            background-position: center;
+            font-family: ui-sans-serif, system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        #carrier-output {
+            padding-top: 4px;
+            padding-left: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgb(255, 255, 255);
+        }
+
+        .txt {
+            font-size: 14px;
+            text-align: justify;
+            max-width: 100%;
+        }
+
+        .border {
+            border: 15px solid rgba(0, 0, 0, 0.729);
+            width: 369px;
+            height: 629px;
+            border-radius: 26px;
+            box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .02);
+            position: absolute;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('carrier').addEventListener('input', function () {
+                document.getElementById('carrier-output').innerHTML = this.value;
+            });
+
+            document.getElementById('revenue').addEventListener('input', function () {
+                document.getElementById('revenue-output').innerHTML = this.value;
+            })
+
+            document.getElementById('file-input').addEventListener('input', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const imageSrc = event.target.result;
+                        document.getElementById('screenshort-container').style.backgroundImage = "url(" + imageSrc + ")";
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    document.getElementById('screenshort-container').style.backgroundImage = "url('./img/mountain.jpeg')";
+                }
+            });
+
+            document.getElementById('export').addEventListener('click', function () {
+                // Get the element to be captured
+                var container = document.getElementById('screenshort-container');
+                container.style.borderRadius = '0px';
+                html2canvas(container, { allowTaint: true }).then(function (canvas) {
+
+                    var link = document.createElement("a");
+                    document.body.appendChild(link);
+                    link.download = "html_image.jpg";
+                    link.href = canvas.toDataURL();
+                    link.target = '_blank';
+                    link.click();
+                    container.style.borderRadius = '10px';
+                });
+            });
+
+
+            // Function to update the current date and time
+            function updateDateTime() {
+                var now = new Date();
+                var timeElement = document.getElementById('current-time');
+                var dateElement = document.getElementById('current-date');
+
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var seconds = now.getSeconds();
+                var day = now.getDate();
+                var month = now.getMonth(); // Months are zero-indexed
+                var year = now.getFullYear();
+
+                // Array of month names
+                var monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+
+                // Array of day names
+                var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+                // Formatting time
+                var timeString = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+                timeElement.textContent = timeString;
+
+                // Formatting date
+                var dateString = dayNames[now.getDay()] + ', ' + monthNames[month] + ' ' + day;
+                dateElement.textContent = dateString;
+            }
+
+            // Call the function initially to set the date and time
+            updateDateTime();
+
+            // Update date and time every second
+            setInterval(updateDateTime, 1000);
+
+            document.getElementById('image').addEventListener("input", function () {
+                document.getElementById('screenshort-container').style.backgroundImage = `url(./img/${this.value})`;
+            })
+            function resetForm() {
+                // Reset carrier input
+                document.getElementById('carrier').value = '';
+                document.getElementById('carrier-output').innerHTML = 'Airtel 5G';
+
+                // Reset revenue input
+                document.getElementById('revenue').value = '';
+                document.getElementById('revenue-output').innerHTML = '100';
+
+                // Reset file input
+                document.getElementById('file-input').value = '';
+                document.getElementById('screenshort-container').style.backgroundImage = "url('./img/wallpaper2.jpeg')";
+
+
+                // Clear image input
+                document.getElementById('image').value = '';
+            }
+
+            document.getElementById('reset').addEventListener('click',resetForm);
+        });
+    </script>
+    <section class="section">
+        <div class="container">
+            <h1 class="title has-text-centered">Twitter Ad Revenue Generator</h1>
+            <div class="box">
+                <div class="columns">
+                    <div class="column is-4">
+                        <div class="border">
+                            <div id="screenshort-container">
+                                <div class="columns m-0 p-0">
+                                    <div class="column m-0 p-0">
+                                        <p id="carrier-output" class="has-text-weight-bold has-text-light">JIO 5G</p>
+                                    </div>
+                                    <div class="column m-0 p-0 has-text-right">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960"
+                                                width="16" fill="white" style="padding-top: 2px;">
+                                                <path
+                                                    d="M480-120q-42 0-71-29t-29-71q0-42 29-71t71-29q42 0 71 29t29 71q0 42-29 71t-71 29ZM254-346l-84-86q59-59 138.5-93.5T480-560q92 0 171.5 35T790-430l-84 84q-44-44-102-69t-124-25q-66 0-124 25t-102 69ZM84-516 0-600q92-94 215-147t265-53q142 0 265 53t215 147l-84 84q-77-77-178.5-120.5T480-680q-116 0-217.5 43.5T84-516Z" />
+                                            </svg>
+                                            <img style="width: 20px;
+                                            height: 20px;
+                                            padding-top: 1px;
+                                            padding-bottom: 4px " src="./img/signal.png" alt="">
+                                            <img style="width: 20px; height: 25px; margin-right: 10px; padding-top: 4px;"
+                                                src="./img/battery.png" alt="">
+                                        </div>
+                                    </div>
+                                    <div id="datetime-container" style="position: absolute; top: 18%;left: 32%;">
+                                        <p id="current-date" style="margin-bottom: -10px;"
+                                            class="has-text-light has-text-weight-semibold has-text-centered"></p>
+                                        <p id="current-time"
+                                            class="has-text-light has-text-centered is-size-2 has-text-weight-semibold"
+                                            style="margin-bottom: -10px;"></p>
+                                    </div>
+                                    <div class="card"
+                                        style="position: absolute;top: 50%; left: 50%;transform: translate(-50%, -50%);background-color: rgba(243, 244, 246, 0.9);width: calc(100% - 24px);border-radius: 7px;padding: 10px 12px;">
+                                        <div class="card-content p-0">
+                                            <div class="is-flex">
+                                                <div style="min-width: 64px! important;"
+                                                    class="is-flex is-align-items-center">
+                                                    <img src="./img/x.jpg"
+                                                        style="width: 40px;height: 40px;border-radius: 8px;" alt="">
+                                                </div>
+                                                <div>
+                                                    <div class="columns m-0 p-0">
+                                                        <div class="column m-0 p-0">
+
+                                                            <p style="
+                                                    font-weight: 600;">You
+                                                                got
+                                                                paid!
+                                                            </p>
+                                                        </div>
+                                                        <div class="column is-3 m-0 p-0">
+                                                            <p style="
+                                                    font-size: 12px;
+                                                    font-weight: 500;
+                                                    color: rgb(107, 114, 128);
+                                                    text-align: right;">1m ago</p>
+                                                        </div>
+                                                    </div>
+                                                    <p class="txt">$<span id="revenue-output">200</span> has been
+                                                        deposited into your account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        style="border-top: 4px solid gainsboro;position: absolute;width: 115px; border-radius: 3px;bottom: 2%;left: 32%;">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="columns" style="position: absolute; bottom: 2%;">
+                                    <style>
+                                        .column .img {
+                                            width: 50px;
+                                            height: 50px;
+                                            padding: 10px;
+                                            background-color: rgba(220, 220, 220, 0.457);
+                                            border-radius: 50%;
+                                            opacity: 0.7;
+                                        }
+                                    </style>
+                                    <div class="column  has-text-left">
+                                        <div class="img has-text-right mx-4">
+                                            <img src="./img/flashlight.png" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="column has-text-right">
+                                        <div class="img" style="margin-left: 170px;">
+                                            <img src="./img/camera.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <p class="is-size-5 mt-5 has-text-weight-semibold">Wallpaper</p>
+                        <div class="columns mt-5">
+                            <div class="column is-flex+
+                             is-align-items-center is-justify-content-center">
+                                <div class="select">
+                                    <select name="" id="image">
+                                        <option value="space.jpeg"> Image 1</option>
+                                        <option value="silk.jpeg"> Image 2</option>
+                                        <option value="plant.jpeg"> Image 3</option>
+                                        <option value="ocean.jpeg"> Image 4</option>
+                                        <option value="mountain.jpeg"> Image 5</option>
+                                        <option value="abstract.jpeg"> Image 6</option>
+                                        <option value="wallpaper1.jpeg"> Image 7</option>
+                                        <option value="wallpaper2.jpeg"> Image 8</option>
+                                        <option value="wallpaper3.jpeg"> Image 9</option>
+                                        <option value="wallpaper4.jpeg"> Image 10</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="column is-1 is-flex is-align-items-center">
+                                <p class="has-text-centered has-text-weight-bold">or</p>
+                            </div>
+                            <div class="column is-flex is-justify-content-center">
+                                <div class="file is-boxed">
+                                    <label class="file-label">
+                                        <input class="file-input" id="file-input" type="file" name="resume">
+                                        <span class="file-cta">
+                                            <span class="file-icon">
+                                                <img src="./img/upload.gif" alt="">
+                                            </span>
+                                            <span class="file-label">
+                                                Choose a file…
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="is-size-5 has-text-weight-semibold">Details</p>
+                        <div class="mt-3">
+                            <label for="carrier">Carrier</label>
+                            <input type="text" id="carrier" placeholder="JIO 5G" value="JIO 5G" class="input mt-1">
+                        </div>
+                        <div class="mt-3">
+                            <label for="revenue">Revenue</label>
+                            <input class="input mt-1" type="text" id="revenue" placeholder="100.00" value="100.00">
+                        </div>
+
+                        <div class="buttons mt-5">
+                            <button class="button  is-info is-rounded has-text-weight-semibold" id="export">Export
+                                Screenshort
+                                &gt</button>
+                            <button class="button  is-danger has-text-weight-bold is-rounded mx-2" id="reset">
+                                Reset
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-1" height="24"
+                                    viewBox="0 -960 960 960" width="24" fill="white">
+                                    <path
+                                        d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
